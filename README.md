@@ -1,150 +1,155 @@
- 🥦 NutriFusion
+ 🥦 NutriFusion: Personalized Nutrition Intelligence
 
-NutriFusion is a health-focused data platform designed to provide personalized nutrition and recipe recommendations based on age and medical conditions. It collects, cleans, and prepares real-world nutrition and health-related datasets through an intelligent big data pipeline to support AI-powered food guidance tools.
+NutriFusion is a smart nutrition recommendation system that personalizes dietary suggestions based on a user’s age group and medical condition. The platform combines real-world food data with health standards to provide ingredient-level analysis, highlight nutrient gaps, and suggest healthy alternatives through AI-enabled tools.
+
+This project leverages large-scale datasets, natural language processing, and data science pipelines to support health-aware recipe enhancement and dietary decision-making.
 
 ---
 
-🚀 Project Structure
+ 🚀 Project Folder Structure
 
 ```
 NutriFusion/
-
 ├── data/
-│   └── raw/                     # Raw scraped datasets from APIs and websites
-│   └── cleaned/                 # Cleaned datasets ready for analysis
+│   ├── raw/                  # Scraped data (Edamam, OpenFoodFacts, etc.)
+│   └── cleaned/              # Cleaned datasets (recipes, nutrients, age-health norms)
 │
 ├── src/
-│   ├── scrapers/               # Web scraping scripts using BeautifulSoup, Selenium
-│   ├── preprocessor/           # Scripts for cleaning, merging, and formatting datasets
-│   └── eda/                    # Exploratory Data Analysis and visualizations
+│   ├── scrapers/             # Scripts to collect recipe and nutrition info
+│   ├── preprocessor/         # Dataset cleaners, mergers, and formatters
+│   ├── nlp_extractor/        # NLP/Regex ingredient extractors
+│   ├── nutrient_analyzer/    # Nutrient gap calculator
+│   └── recommender/          # Rule-based and ML-based ingredient suggestion
 │
-├── tests/                      # Test scripts for validation
-│
-├── reports/                    # Documentation and milestone reports
-│
-├── sonar/                      # Static analysis and code quality config
-│
+├── ui/                       # Streamlit or Flask-based user interface
+├── tests/                    # Unit and integration tests
+├── reports/                  # Milestone reports, diagrams, weekly logs
+├── sonar/                    # SonarQube config and results
 ├── requirements.txt
 ├── docker-compose.yml (TBD)
 └── README.md
 ```
 
+---
 
+🧠 System Modules Overview
 
-🧠 How It Works (Pipeline Overview)
+1️⃣ Data Preparation
 
-NutriFusion uses multiple tools and services to collect, process, and organize data relevant to nutrition and health personalization:
+ Two core datasets:
 
-🔹 Data Collection Pipeline
+   `70000_recipes_nutrients_cleaned_final.csv` — recipes with nutritional details.
+   `Cleaned_Age_and_health_data.csv` — health-based recommended nutrient ranges.
+ Processes:
 
-Scraping Sources:
+   Standardize ingredient names, compute nutrient ratios (e.g., protein per calorie).
+   Normalize age-health nutritional requirements and convert disease labels to one-hot format.
 
-APIs: Edamam, OpenFoodFacts, Spoonacular
-Websites: SeriousEats, EatingWell, Yummly, Kaggle
+ 2️⃣ NLP Ingredient Extractor
 
-Tools Used:
+* Uses spaCy or Regex to parse free-text recipes.
+* Strips quantities/units (e.g., "2 tbsp olive oil") and identifies core ingredients.
+* Optional: Fine-tuned NER model from Hugging Face (`dslim/bert-base-NER`) to improve extraction accuracy.
 
-  * `BeautifulSoup`, `Selenium` for scraping
-  * `Pandas`, `Jupyter Notebook` for processing
-  * `SonarQube` for static code analysis
+ 3️⃣ Nutrient Analyzer
 
-  Data Format:
+* Inputs: Extracted ingredients, user's selected health condition + age range.
+* Calculates total nutrients from selected recipe.
+* Compares with health standards to highlight nutrient deficiencies (e.g., protein shortfall).
 
-  * Datasets are stored in CSV format
-  * Cleaned datasets are structured by health conditions and age groups
+ 4️⃣ AI Recommender
+
+* Rule-Based Mode: Suggests ingredients high in nutrients that are lacking.
+* ML Mode (Optional): Uses clustering or KNN to find similar recipes optimized for the user’s profile.
+
+ 5️⃣ User Interface
+
+* Simple Streamlit or Flask app where users:
+
+  * Enter a custom recipe
+  * Choose their health condition and age group
+  * View ingredient breakdown, nutritional gaps, and suggested additions
 
 ---
 
- ⚙️ Setup & Run Instructions
+ ⚙️ Setup Instructions
 
- 1. Clone the Repository
 
-bash
+# Step 1: Clone the repository
 git clone https://github.com/LCM-S25-3035/NutriFusion.git
 cd NutriFusion
-```
 
-2. Install Dependencies
-
-```bash
+# Step 2: Install dependencies
 pip install -r requirements.txt
-```
 
-> Ensure Python 3.11+ is installed.
-
-3. Run Scrapers
-
-Navigate to the scrapers directory and run the scraping scripts.
-
-```bash
+# Step 3: Run scrapers (optional)
 cd src/scrapers
 python scrape_edamam.py
-```
 
-4. Preprocess Datasets
-
-```bash
+# Step 4: Preprocess and clean datasets
 cd ../preprocessor
 python clean_merge.py
 ```
 
+> ✅ Python 3.11+ is recommended for compatibility.
+
 ---
 
-📦 Technologies Used
+## 📦 Tech Stack
 
 * Python 3.11+
-* BeautifulSoup & Selenium (Web Scraping)
-* Pandas (Data Wrangling)
-* SonarQube (Code Quality)
-* Jupyter (EDA & Documentation)
+* BeautifulSoup, Selenium (Web scraping)
+* spaCy, Regex, HuggingFace Transformers (NLP)
+* Pandas, NumPy (Data processing)
+* Streamlit or Flask (UI)
+* SonarQube (Code quality)
 
 ---
 
-✅ Progress Overview
+ ✅ Current Progress
 
-✔ Completed
+**Completed:**
 
- ✅ Data scraping from Edamam, OpenFoodFacts, and other sources
- ✅ Dataset cleaning: removed duplicates, fixed encodings, translated non-English data
- ✅ Organized nutrition data by health condition and age group
- ✅ Setup SonarQube and ran code analysis
- ✅ Conducted exploratory data analysis (EDA)
+* ✅ Recipe and nutrition data collection from Edamam, OpenFoodFacts
+* ✅ Ingredient and nutrient data cleaned, standardized, and labeled by age and disease
+* ✅ Setup of static code analysis with SonarQube
+* ✅ Ingredient extraction module using NLP and rule-based methods
+* ✅ Weekly milestone logging and paper reviews
 
-🧪 In Progress
+**In Development:**
 
- Data preprocessing and transformation
- Integration with ML models
- Model building and deployment research
- Research paper review and documentation
+* 🔄 Nutrient gap detection logic testing
+* 🔄 Recommender system tuning (rule-based + ML)
+* 🔄 Streamlit/Flask UI for end-to-end demo
 
 ---
 
  🧪 QA & Testing
 
- ✅ Static code analysis via SonarQube
- ❌ Test cases are still under development
- ✅ GitHub commits available for each member
+* ✅ Code scanning with SonarQube
+* 🔲 Automated unit tests (in progress)
+* ✅ All datasets and scripts versioned on GitHub
 
 ---
 
-## 🔭 Future Scope
+ 🔭 Future Goals
 
-* ML-based personalized diet recommendation system
-* UI for selecting user preferences and viewing results
-* Integration with streaming tools (e.g., Kafka, RisingWave)
-* Deployment of dashboards and APIs
-* Live scraping with automation support
-
----
-
- 💡 Summary
-
-NutriFusion is a scalable, data-driven nutrition analytics platform aiming to help users make informed dietary choices through intelligent content delivery. By merging real-world data with personalized health needs, it paves the way for AI-assisted health guidance.
+* Deploy web-based interactive UI
+* Enable real-time recipe scoring and streaming ingestion via **Kafka**/**RisingWave**
+* Train custom ML models for disease-specific ingredient prediction
+* Build personalized meal planning APIs
+* Integrate with wearable health devices or health records (future scope)
 
 ---
 
-GitHub Repo: [https://github.com/LCM-S25-3035/NutriFusion](https://github.com/LCM-S25-3035/NutriFusion)
-Project Board: [Link](https://github.com/orgs/LCM-S25-3035/projects/2)
+ 💡 Vision
 
+**NutriFusion** is built to empower users in making healthier food choices through data-driven insights. By tailoring recipes to individual health needs, it bridges the gap between generic dietary advice and personalized nutrition — one ingredient at a time.
 
+---
+
+📁 GitHub Repo: [NutriFusion](https://github.com/LCM-S25-3035/NutriFusion)
+🗂️ Project Board: [View Progress](https://github.com/orgs/LCM-S25-3035/projects/2)
+
+---
 
