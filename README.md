@@ -117,41 +117,6 @@ python clean_merge.py
 * ✅ Weekly milestone logging and paper reviews
 
 
- 📊 Model Comparison: Why We Chose LightFM
-
-To personalize recipe recommendations, we evaluated various machine learning models. Here's a comparison between the most relevant types:
-
-| Feature / Aspect                | **LightFM (Chosen)**                 | **Random Forest**       | **Neural Network (MLP)**  |
-| ------------------------------- | ------------------------------------ | ----------------------- | ------------------------- |
-| **Type**                        | Matrix Factorization Recommender     | Tree-Based Ensemble     | Deep Learning             |
-| **Use Case Fit**                | ✅ Personalized user-item suggestions | ❌ Not ideal for ranking | ✅ Good for classification |
-| **Handles Sparse Data**         | ✅ Yes                                | ❌ No                    | ✅ Yes (with embeddings)   |
-| **Works with Implicit Ratings** | ✅ Yes (clicks, nutrient scores)      | ❌ Needs labels          | ⚠️ With preprocessing     |
-| **Supports Metadata**           | ✅ Yes (hybrid support)               | ✅ Yes                   | ✅ Yes                     |
-| **Training Time**               | ✅ Fast                               | ⚠️ Medium               | ❌ Slower                  |
-| **Interpretability**            | Moderate                             | ✅ High                  | ⚠️ Low (black-box)        |
-| **Library**                     | `LightFM`                            | `scikit-learn`          | `TensorFlow`, `PyTorch`   |
-
----
-
- ✅ Why LightFM Was the Best Choice for NutriFusion
-
-* Optimized for recommendation: Learns patterns from nutrient-ranked recipes + simulated user preferences
-* Supports hybrid features: Can incorporate age range, health conditions in future
-* Handles implicit feedback: Doesn't need explicit user ratings — works great with derived nutrient scores
-* Scalable and efficient: Ideal for large recipe datasets
-* Results: Achieved `Precision@5 = 1.0` and `AUC ≈ 1.0` on tuned model
-
----
-
- 🧠 Visual Summary: Model Fit for NutriFusion
-
-```
-Recommendation Accuracy
-├── LightFM         ──────────────── ✅ Best (implicit, sparse, hybrid)
-├── Random Forest   ───────          ⚠️ Okay for regression, not ranking
-└── Neural Network  ──────────       ✅ Good with enough data, needs tuning
-``
 
 **In Development:**
 
