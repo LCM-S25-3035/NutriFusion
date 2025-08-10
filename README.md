@@ -37,10 +37,9 @@ NutriFusion/
 
 ## 🧠 System Architecture
 
-![System Architecture](
-architecture_diagram.png)
+![System Architecture](architecture.png)
 
-*(Mobile-friendly version available: `assets/nutrifusion_architecture_mobile.png`)*
+
 
 ---
 
