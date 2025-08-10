@@ -1,167 +1,166 @@
-🥦 NutriFusion: Personalized Nutrition Intelligence
+ 🥦 NutriFusion: Personalized Nutrition Intelligence
 
-NutriFusion is a smart nutrition recommendation system that personalizes dietary suggestions based on a user’s age group and medical condition. The platform combines real-world food data with health standards to provide ingredient-level analysis, highlight nutrient gaps, and suggest healthy alternatives through AI-enabled tools.
+![NutriFusion Banner](nutrifusion_banner.png)
 
-This project leverages large-scale datasets, natural language processing, and data science pipelines to support health-aware recipe enhancement and dietary decision-making.
 
-🚀 Project Folder Structure
 
+NutriFusion is a **health-aware nutrition recommendation system** that personalizes dietary suggestions based on a user’s **age** and **medical condition**.
+It leverages **big data pipelines**, **NLP**, and **LLMs** to provide ingredient-level analysis, highlight nutrient gaps, and suggest healthy modifications — while controlling for AI hallucinations.
+
+---
+
+## 📂 Project Structure
+
+```
 NutriFusion/
+├── assets/                   # Banner + Architecture images
 ├── data/
-│   ├── raw/                  # Scraped data (Edamam, OpenFoodFacts, etc.)
-│   └── cleaned/              # Cleaned datasets (recipes, nutrients, age-health norms)
+│   ├── raw/                  # Original scraped datasets (Edamam, OpenFoodFacts, etc.)
+│   └── cleaned/              # PySpark-cleaned datasets (recipes, nutrients, age-health norms)
 │
 ├── src/
-│   ├── scrapers/             # Scripts to collect recipe and nutrition info
-│   ├── preprocessor/         # Dataset cleaners, mergers, and formatters
-│   ├── nlp_extractor/        # NLP/Regex ingredient extractors
-│   ├── nutrient_analyzer/    # Nutrient gap calculator
-│   └── recommender/          # AI-enhanced recommendation logic (LLM + FAISS)
+│   ├── scrapers/             # Web scraping scripts
+│   ├── preprocessor/         # Data cleaning, merging (PySpark on Dataproc)
+│   ├── nlp_extractor/        # NLP-based ingredient extraction
+│   ├── nutrient_analyzer/    # Nutrient gap calculation
+│   └── recommender/          # LLM + FAISS recommendation engine
 │
-├── ui/                       # Streamlit or Flask-based user interface
-├── tests/                    # Unit and integration tests
-├── reports/                  # Milestone reports, diagrams, weekly logs
-├── sonar/                    # SonarQube config and results
+├── ui/                       # Gradio-based user interface
+├── tests/                    # Unit/integration tests
+├── reports/                  # Milestone docs, logs, diagrams
+├── sonar/                    # SonarQube configuration & results
 ├── requirements.txt
-├── docker-compose.yml (TBD)
 └── README.md
+```
 
-🧠 System Modules Overview
+---
+
+## 🧠 System Architecture
+
+![System Architecture](nutrifusion_architecture.png)
+
+*(Mobile-friendly version available: `assets/nutrifusion_architecture_mobile.png`)*
+
+---
+
+ 🔄 Workflow Overview
 
 1️⃣ Data Preparation
 
-Two core datasets:
+* Scraping from Edamam, OpenFoodFacts
+* Cleaning & merging datasets using PySpark on Google Cloud Dataproc
+* Ingredient normalization & nutrient ratio computation
 
-70000_recipes_nutrients_cleaned_final.csv — recipes with nutritional details.
-Cleaned_Age_and_health_data.csv — health-based recommended nutrient ranges.
-Processes:
+2️⃣ Ingredient Extraction
 
-Standardize ingredient names, compute nutrient ratios (e.g., protein per calorie).
-Normalize age-health nutritional requirements and convert disease labels to one-hot format.
+spaCy + Regex for parsing and cleaning recipe ingredients
+Optional HuggingFace NER model for improved accuracy
 
-2️⃣ NLP Ingredient Extractor
+3️⃣ Nutrient Gap Analysis
 
-Uses spaCy or Regex to parse free-text recipes.
+* Compare nutrients to age- and disease-specific goals
+* Identify deficiencies & excesses
 
-Strips quantities/units (e.g., "2 tbsp olive oil") and identifies core ingredients.
+4️⃣ Recommendation Engine
 
-Optional: Fine-tuned NER model from Hugging Face (dslim/bert-base-NER) to improve extraction accuracy.
-
-3️⃣ Nutrient Analyzer
-
-Inputs: Extracted ingredients, user's selected health condition + age range.
-
-Calculates total nutrients from selected recipe.
-
-Compares with health standards to highlight nutrient deficiencies (e.g., protein shortfall).
-
-4️⃣ AI Recommender
-
-Uses FAISS for semantic search and Mistral-7B-Instruct-v0.1, a compact and instruction-tuned LLM, for generating precise, health-aware ingredient suggestions.
-
-Pipeline includes:
-
-Cleaning and embedding recipes using MiniLM-L6 via SentenceTransformer.
-
-Prompt engineering for strict instruction-following.
-
-Ingredient validation using health condition-specific rules.
-
-Trust score validation with Cleanlab-TLM to control hallucinations.
+  FAISS for semantic retrieval of similar recipes
+  Mistral-7B-Instruct-v0.1 for ingredient swap suggestions
+  Strict rules to prevent hallucinations
+  Cleanlab-TLM trust score validation
 
 5️⃣ User Interface
 
-Simple Streamlit or Flask app where users:
+  Gradio app for interactive recipe review
+  Outputs modified ingredient list + nutritionist explanation
 
-Enter a custom recipe
+---
 
-Choose their health condition and age group
+⚙️ Installation & Setup
 
-View ingredient breakdown, nutritional gaps, and AI-generated suggestions
-
-⚙️ Setup Instructions
-
-# Step 1: Clone the repository
+```bash
+# Clone the repository
 git clone https://github.com/LCM-S25-3035/NutriFusion.git
 cd NutriFusion
 
-# Step 2: Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# Step 3: Run scrapers (optional)
-cd src/scrapers
-python scrape_edamam.py
+# (Optional) Run scrapers
+python src/scrapers/scrape_edamam.py
 
-# Step 4: Preprocess and clean datasets
-cd ../preprocessor
-python clean_merge.py
+# Preprocess datasets with PySpark
+python src/preprocessor/clean_merge.py
+```
 
-✅ Python 3.11+ is recommended for compatibility.
+---
 
-📦 Tech Stack
+🚀 Running the Gradio App
 
-Python 3.11+
+```bash
+python mistral_7b_gradio_.py
+```
 
-BeautifulSoup, Selenium (Web scraping)
+* Loads cleaned datasets
+* Runs FAISS + Mistral-7B recommendation
+* Launches Gradio interface with public share link
 
-spaCy, Regex, HuggingFace Transformers (NLP)
+---
 
-SentenceTransformers, FAISS, Mistral-7B (AI recommendation)
+ 💻 Usage Example
 
-Pandas, NumPy (Data processing)
+**Input**:
 
-Streamlit or Flask (UI)
+```
+Dish Name: Butter Chicken
+Age: 30
+Health Condition: Diabetes
+```
 
-SonarQube (Code quality)
+**Output**:
 
-✅ Current Progress
+```
+✅ Modified Ingredient List:
+chicken, onion, garlic, ginger, tomato puree, olive oil, spinach, cinnamon, turmeric, broccoli, kale, bell peppers, mushrooms, zucchini, flaxseeds, chia seeds, whole grain pasta
 
-Completed:
+📋 Nutritionist Explanation:
+The original recipe for butter chicken has been modified to reduce ingredients like cream and butter, which can impact blood sugar levels for someone with diabetes. In their place, nutrient-rich additions such as spinach, turmeric, and flaxseeds have been incorporated to increase fiber and support blood sugar stability. These changes make the dish healthier while maintaining its flavor profile, ensuring it is better suited for a 30-year-old managing diabetes.
+```
 
-✅ Recipe and nutrition data collection from Edamam, OpenFoodFacts
+---
 
-✅ Ingredient and nutrient data cleaned, standardized, and labeled by age and disease
+ 📦 Tech Stack
 
-✅ Setup of static code analysis with SonarQube
+* Big Data: PySpark (Google Cloud Dataproc)
+* NLP: spaCy, Regex, HuggingFace Transformers
+* AI: SentenceTransformers, FAISS, Mistral-7B, Cleanlab-TLM
+* Frontend: Gradio
+* Data Processing: Pandas, NumPy
+* Code Quality: SonarQube
 
-✅ Ingredient extraction module using NLP and rule-based methods
+---
 
-✅ Weekly milestone logging and paper reviews
+ ✅ Current Progress
 
-✅ FAISS-based retrieval and Mistral-7B integration for personalized recommendations
+✔ Data scraping & cleaning (Edamam, OpenFoodFacts)
+✔ PySpark-based preprocessing on Dataproc
+✔ FAISS + Mistral-7B recommendation pipeline
+✔ Gradio interface deployment
+✔ Hallucination control with Cleanlab-TLM
 
-In Development:
+---
 
-🔄 Nutrient gap detection logic testing
+ 🔭 Future Goals
 
-🔄 Streamlit/Flask UI for end-to-end demo
+* Real-time recipe scoring via Kafka/RisingWave
+* Fine-tuned Mistral-7B for food/nutrition domain
+* API endpoints for meal planning apps
+* Wearable device integration for real-time health tracking
 
-🔄 Trust score validation using Cleanlab-TLM
+---
 
-🧪 QA & Testing
+ 💡 Vision
 
-✅ Code scanning with SonarQube
+To empower healthier food choices through data-driven personalization, transforming everyday recipes into meals optimized for your **age**, **medical needs**, and **nutritional goals**.
 
-🔲 Automated unit tests (in progress)
-
-✅ All datasets and scripts versioned on GitHub
-
-🔭 Future Goals
-
-Deploy web-based interactive UI
-
-Enable real-time recipe scoring and streaming ingestion via Kafka/RisingWave
-
-Fine-tune Mistral-7B for food domain if needed
-
-Build personalized meal planning APIs
-
-Integrate with wearable health devices or health records (future scope)
-
-💡 Vision
-
-NutriFusion is built to empower users in making healthier food choices through data-driven insights. By tailoring recipes to individual health needs, it bridges the gap between generic dietary advice and personalized nutrition — one ingredient at a time.
-
-📁 GitHub Repo: NutriFusion
-🗂️ Project Board: View Progress
+---
 
