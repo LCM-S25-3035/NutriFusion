@@ -37,7 +37,7 @@ NutriFusion/
 
 ## 🧠 System Architecture
 
-![System Architecture](architecture.png)
+![System Architecture](nutrifusion-architecture.png)
 
 
 
